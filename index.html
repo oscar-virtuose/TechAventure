@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" >
-  <meta name="viewport" content="width=device-width,initial-scale=1" >
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Cyber-Aventure 2.0 – Formation bureautique & informatique avec Mr Rehoboth</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -188,19 +188,13 @@
       gap: 8px;
     }
 
-    .btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none !important;
-    }
-
     .btn.primary {
       background: var(--accent-gradient);
       color: white;
       box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
     }
 
-    .btn.primary:hover:not(:disabled) {
+    .btn.primary:hover {
       transform: translateY(-3px);
       box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
     }
@@ -211,7 +205,7 @@
       border: 2px solid var(--border);
     }
 
-    .btn.ghost:hover:not(:disabled) {
+    .btn.ghost:hover {
       background: var(--card-hover);
       transform: translateY(-2px);
     }
@@ -222,7 +216,7 @@
       box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3);
     }
 
-    .btn.cta:hover:not(:disabled) {
+    .btn.cta:hover {
       transform: translateY(-3px);
       box-shadow: 0 8px 24px rgba(220, 38, 38, 0.4);
     }
@@ -530,55 +524,6 @@
       justify-content: flex-end;
     }
 
-    /* Loading state */
-    .loading-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 60px 20px;
-      text-align: center;
-    }
-
-    .loading-spinner {
-      width: 60px;
-      height: 60px;
-      border: 4px solid var(--bg-tertiary);
-      border-top-color: var(--accent2);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-bottom: 24px;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    .loading-text {
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 8px;
-    }
-
-    .loading-subtext {
-      font-size: 0.95rem;
-      color: var(--text-muted);
-    }
-
-    .ai-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--accent-gradient);
-      color: white;
-      padding: 6px 12px;
-      border-radius: 999px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      margin-left: 8px;
-    }
-
     @media (max-width: 840px) {
       .welcome {
         grid-template-columns: 1fr;
@@ -627,8 +572,8 @@
       <header class="top">
         <div class="logo">🎮</div>
         <div>
-          <h1>Cyber-Aventure 2.0 <span class="ai-badge">🤖 IA</span></h1>
-          <p class="lead">Formation bureautique & informatique avec <strong>Mr Rehoboth</strong> — Questions générées par IA</p>
+          <h1>Cyber-Aventure 2.0</h1>
+          <p class="lead">Formation bureautique & informatique avec <strong>Mr Rehoboth</strong> — De débutant à expert</p>
         </div>
       </header>
 
@@ -637,12 +582,13 @@
         <div class="welcome">
           <div class="info">
             <h2>Bienvenue, aventurier·ère du numérique 🚀</h2>
-            <p style="color: var(--text-secondary)">Testez vos compétences avec des questions uniques générées par intelligence artificielle !</p>
+            <p style="color: var(--text-secondary)">Testez vos compétences et découvrez nos formations en bureautique et informatique.</p>
 
             <div class="levels">
               <button class="level-btn active" data-level="beginner">🌱 Débutant</button>
               <button class="level-btn" data-level="intermediate">📚 Intermédiaire</button>
               <button class="level-btn" data-level="expert">🏆 Expert</button>
+              <button class="level-btn" data-level="random">🎲 Aléatoire</button>
             </div>
 
             <div class="start-row">
@@ -702,7 +648,7 @@
                 <div class="chip">📚 Interm: <strong id="best-inter">—</strong></div>
                 <div class="chip">🏆 Expert: <strong id="best-expert">—</strong></div>
               </div>
-              <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 14px">💡 Questions uniques à chaque partie grâce à l'IA !</p>
+              <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 14px">💡 Astuce : testez vos compétences puis inscrivez-vous pour les perfectionner !</p>
             </div>
 
             <!-- Témoignages -->
@@ -715,15 +661,6 @@
               <p class="testimonial-author">— Christophe L., Chef de projet</p>
             </div>
           </div>
-        </div>
-      </section>
-
-      <!-- LOADING STATE -->
-      <section id="loading" style="display: none">
-        <div class="loading-container">
-          <div class="loading-spinner"></div>
-          <div class="loading-text">🤖 Génération des questions...</div>
-          <div class="loading-subtext">L'IA prépare un quiz personnalisé pour vous</div>
         </div>
       </section>
 
@@ -818,6 +755,78 @@
       }
     });
 
+    // Questions database - 20 questions per level
+    const POOLS = {
+      beginner: [
+        {q:"Qu'est-ce qu'un ordinateur ?", opts:["Une machine qui calcule et traite des informations","Un jouet","Un livre","Une voiture"], a:0},
+        {q:"Que signifie 'cliquer' ?", opts:["Faire du bruit","Appuyer sur un bouton de la souris","Bouger la souris","Éteindre l'ordinateur"], a:1},
+        {q:"Qu'est-ce qu'Internet ?", opts:["Un magasin","Un réseau qui connecte les ordinateurs du monde entier","Un jeu","Un livre"], a:1},
+        {q:"Que fait un clavier ?", opts:["Il joue de la musique","Il permet d'écrire des lettres et des chiffres","Il dessine","Il cuisine"], a:1},
+        {q:"Qu'est-ce qu'un fichier ?", opts:["Un animal","Un endroit où on range des informations","Un jouet","Un fruit"], a:1},
+        {q:"Que signifie 'sauvegarder' ?", opts:["Aider quelqu'un","Enregistrer son travail","Courir vite","Manger"], a:1},
+        {q:"Qu'est-ce qu'un mot de passe ?", opts:["Un mot magique","Un code secret","Un jeu de mots","Une chanson"], a:1},
+        {q:"Que fait un écran ?", opts:["Il mange","Il montre les images et les textes","Il vole","Il nage"], a:1},
+        {q:"Comment s'appelle le 'cerveau' de l'ordinateur ?", opts:["L'écran","Le processeur (CPU)","Le clavier","La souris"], a:1},
+        {q:"Que signifie 'imprimer' ?", opts:["Crier fort","Produire une copie papier d'un document","Dessiner à la main","Photographier"], a:1},
+        {q:"Qu'est-ce qu'une icône ?", opts:["Une image religieuse","Une petite image qui représente un programme ou un fichier","Un type de police","Un virus"], a:1},
+        {q:"Comment s'appelle le programme pour naviguer sur Internet ?", opts:["Un navigateur","Un conducteur","Un pilote","Un explorateur"], a:0},
+        {q:"Que fait la corbeille ?", opts:["Elle nettoie la maison","Elle stocke les fichiers supprimés","Elle accélère l'ordinateur","Elle imprime"], a:1},
+        {q:"Qu'est-ce qu'un dossier ?", opts:["Un objet en papier","Un conteneur pour ranger des fichiers","Un type de meuble","Un vêtement"], a:1},
+        {q:"Comment appelle-t-on le fait de redémarrer l'ordinateur ?", opts:["Le recycler","Le réinitialiser","Le redémarrer","Le réparer"], a:2},
+        {q:"Que signifie 'glisser-déposer' ?", opts:["Nettoyer l'écran","Déplacer un élément en maintenant le bouton de la souris","Jeter quelque chose","Dessiner"], a:1},
+        {q:"Qu'est-ce qu'un email ?", opts:["Un courrier postal","Un message électronique","Un appel téléphonique","Une vidéo"], a:1},
+        {q:"Comment s'appelle la barre en bas de l'écran Windows ?", opts:["Barre des tâches","Barre de menu","Barre de titre","Barre d'outils"], a:0},
+        {q:"Que fait le bouton 'Annuler' ?", opts:["Efface tout","Annule la dernière action","Ferme le programme","Imprime"], a:1},
+        {q:"Qu'est-ce qu'un logiciel ?", opts:["Un vêtement confortable","Un programme informatique","Un type de meuble","Un outil physique"], a:1}
+      ],
+
+      intermediate: [
+        {q:"Quelle est la différence entre 'sauvegarder' et 'synchroniser' ?", opts:["Aucune","Sauvegarder enregistre localement, synchroniser met à jour sur plusieurs appareils","Synchroniser supprime les données","Sauvegarder partage automatiquement"], a:1},
+        {q:"Que signifie 'navigateur' ?", opts:["Un type de souris","Un logiciel pour consulter Internet","Une clé USB","Un antivirus"], a:1},
+        {q:"Que fait un antivirus ?", opts:["Ralentit l'ordinateur","Protège contre les logiciels malveillants","Supprime les photos","Désinstalle des programmes"], a:1},
+        {q:"Qu'est-ce qu'un cookie (informatique) ?", opts:["Un biscuit","Un petit fichier stocké par un site web","Un virus","Un composant matériel"], a:1},
+        {q:"Quel format est utilisé pour une image compressée sans perte ?", opts:["JPEG","PNG","MP3","EXE"], a:1},
+        {q:"Que fait la touche 'Ctrl + C' ?", opts:["Fermer la fenêtre","Copier la sélection","Coller","Imprimer"], a:1},
+        {q:"Qu'est-ce qu'un réseau WiFi ?", opts:["Une carte mère","Un réseau sans fil","Un câble","Un logiciel"], a:1},
+        {q:"Quel élément est un périphérique de stockage ?", opts:["Écran","Souris","Clé USB","Haut-parleur"], a:2},
+        {q:"Que signifie 'URL' ?", opts:["Uniform Resource Locator - Adresse web","Universal Remote Link","United Radio Location","Unified Resource Library"], a:0},
+        {q:"Qu'est-ce que le cloud computing ?", opts:["Météorologie informatique","Utilisation de services informatiques via Internet","Stockage sur CD","Programmation nuageuse"], a:1},
+        {q:"Que fait un système d'exploitation ?", opts:["Explose l'ordinateur","Gère les ressources et exécute les programmes","Imprime des documents","Navigue sur Internet"], a:1},
+        {q:"Quelle est la différence entre RAM et disque dur ?", opts:["Aucune différence","RAM mémoire temporaire, disque dur stockage permanent","RAM plus lent","Disque dur plus rapide"], a:1},
+        {q:"Que signifie 'SEO' ?", opts:["Search Engine Optimization - Optimisation pour les moteurs de recherche","System Electronic Operation","Software Efficiency Option","Secure Email Organization"], a:0},
+        {q:"Qu'est-ce qu'un phishing ?", opts:["Un sport","Une tentative d'hameçonnage pour voler des informations","Un type de virus","Un logiciel légitime"], a:1},
+        {q:"Que fait un pare-feu (firewall) ?", opts:["Allume un feu","Filtre le trafic réseau","Chauffe l'ordinateur","Nettoie les virus"], a:1},
+        {q:"Qu'est-ce qu'un logiciel open source ?", opts:["Logiciel payant","Logiciel dont le code source est public et modifiable","Logiciel fermé","Logiciel espion"], a:1},
+        {q:"Que signifie 'HTML' ?", opts:["HyperText Markup Language","High Tech Modern Language","Hardware Text Management Line","Hyper Transfer Media Link"], a:0},
+        {q:"Quelle est la fonction principale d'un tableur comme Excel ?", opts:["Dessiner","Manipuler et analyser des données numériques","Naviguer sur Internet","Éditer des photos"], a:1},
+        {q:"Que fait la fonction 'Recherche et remplacement' ?", opts:["Acheter en ligne","Trouver et modifier du texte automatiquement","Rechercher des fichiers","Remplacer du matériel"], a:1},
+        {q:"Qu'est-ce qu'une macro dans Excel ?", opts:["Un gros fichier","Une séquence d'instructions automatisée","Un type de graphique","Une formule complexe"], a:1}
+      ],
+
+      expert: [
+        {q:"Qu'est-ce qu'un 'pare-feu' (firewall) ?", opts:["Un mur physique","Un dispositif réseau filtrant le trafic","Un type de virus","Un navigateur"], a:1},
+        {q:"Que signifie 'open source' ?", opts:["Payant","Code source accessible et modifiable","Privé","Incompatible"], a:1},
+        {q:"Qu'est-ce qu'un 'phishing' ?", opts:["Une attaque de pêche","Une tentative d'obtenir des informations en se faisant passer pour quelqu'un","Un protocole réseau","Un langage de programmation"], a:1},
+        {q:"Que fait une sauvegarde incrémentale ?", opts:["Sauvegarde tout à zéro","Sauvegarde seulement les changements depuis la dernière sauvegarde","Supprime les sauvegardes","Crypte automatiquement"], a:1},
+        {q:"Quel protocole utilise le web sécurisé (HTTPS) ?", opts:["FTP","HTTP sur TLS/SSL","SMTP","POP3"], a:1},
+        {q:"Que signifie 'latence' en réseau ?", opts:["Taille d'un fichier","Délai de transmission des paquets","Vitesse du processeur","Capacité du disque"], a:1},
+        {q:"Quel composant gère l'exécution des programmes ?", opts:["RAM","Carte graphique","Processeur (CPU)","Disque dur"], a:2},
+        {q:"Qu'est-ce qu'une adresse IP ?", opts:["Un identifiant unique d'un appareil sur un réseau","Un mot de passe","Un logiciel","Un réseau"], a:0},
+        {q:"Que signifie 'virtualisation' ?", opts:["Rendre réel","Créer des versions virtuelles de ressources matérielles","Supprimer des fichiers","Optimiser le réseau"], a:1},
+        {q:"Qu'est-ce qu'un container Docker ?", opts:["Un conteneur maritime","Une unité logicielle standardisée et isolée","Un type de virus","Un périphérique de stockage"], a:1},
+        {q:"Que fait l'API REST ?", opts:["Se reposer","Permettre la communication entre applications via HTTP","Stocker des données","Compresser des fichiers"], a:1},
+        {q:"Qu'est-ce que le machine learning ?", opts:["Apprentissage des machines à réparer","Sous-domaine de l'IA permettant aux systèmes d'apprendre","Programmation manuelle","Maintenance informatique"], a:1},
+        {q:"Que signifie 'DevOps' ?", opts:["Development Operations - Collaboration entre développement et exploitation","Device Optimization","Digital Operations","Developer Options"], a:0},
+        {q:"Qu'est-ce qu'un microservice ?", opts:["Un petit logiciel","Une architecture où une application est un ensemble de petits services","Un virus miniature","Un service payant"], a:1},
+        {q:"Qu'est-ce que la blockchain ?", opts:["Une chaîne de magasins","Un registre décentralisé et sécurisé","Un type de virus","Un langage de programmation"], a:1},
+        {q:"Que signifie 'IoT' ?", opts:["Internet of Things - Internet des objets","Input Output Technology","International Online Transfer","Internal Operation Tool"], a:0},
+        {q:"Qu'est-ce qu'un CDN ?", opts:["Content Delivery Network - Réseau de distribution de contenu","Computer Data Node","Central Digital Network","Code Development Nexus"], a:0},
+        {q:"Que fait un load balancer ?", opts:["Équilibre la charge entre plusieurs serveurs","Charge les batteries","Équilibre les couleurs","Pèse les données"], a:0},
+        {q:"Qu'est-ce que le chiffrement de bout en bout ?", opts:["Chiffrement où seuls l'expéditeur et le destinataire peuvent lire","Chiffrement partiel","Chiffrement sans clé","Chiffrement physique"], a:0},
+        {q:"Que signifie 'API' ?", opts:["Application Programming Interface - Interface de programmation","Advanced Programming Input","Automated Process Integration","Application Protocol Interface"], a:0}
+      ]
+    };
+
     /* ---------- IN-MEMORY STORAGE ---------- */
     const memoryStorage = {
       bests: { beginner: null, intermediate: null, expert: null },
@@ -829,7 +838,6 @@
 
     // UI refs
     const WELCOME = document.getElementById('welcome');
-    const LOADING = document.getElementById('loading');
     const GAME = document.getElementById('game');
     const FINAL = document.getElementById('final');
     const startBtn = document.getElementById('start-btn');
@@ -899,6 +907,7 @@
           });
         });
 
+        // Close on overlay click
         overlay.addEventListener('click', (e) => {
           if (e.target === overlay) {
             overlay.remove();
@@ -967,6 +976,7 @@
         score,
         date: new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
       });
+      // Keep only last 10
       if (memoryStorage.leaderboard.length > 10) {
         memoryStorage.leaderboard = memoryStorage.leaderboard.slice(-10);
       }
@@ -988,107 +998,6 @@
       }
     }
 
-    /* ---------- LLM QUESTION GENERATION ---------- */
-    function getLevelDescription(level) {
-      const descriptions = {
-        beginner: "débutant (questions très simples sur les bases de l'informatique: qu'est-ce qu'un ordinateur, une souris, un clavier, comment cliquer, etc.)",
-        intermediate: "intermédiaire (questions sur Word, Excel, PowerPoint, navigation Internet, emails, fichiers, dossiers, raccourcis clavier)",
-        expert: "expert (questions techniques: réseaux, sécurité informatique, cloud, programmation, bases de données, systèmes d'exploitation avancés)"
-      };
-      return descriptions[level] || descriptions.beginner;
-    }
-
-    function generateQuestionsPrompt(level) {
-      const levelDesc = getLevelDescription(level);
-      return `Tu es un générateur de quiz sur l'informatique et la bureautique en français.
-
-Génère exactement 8 questions à choix multiples de niveau ${levelDesc}.
-
-IMPORTANT: Réponds UNIQUEMENT avec un tableau JSON valide, sans aucun texte avant ou après.
-
-Format exact attendu:
-[
-  {
-    "q": "La question en français ?",
-    "opts": ["Option A", "Option B", "Option C", "Option D"],
-    "a": 0
-  }
-]
-
-Règles:
-- "q" = la question
-- "opts" = exactement 4 options de réponse
-- "a" = index (0-3) de la bonne réponse
-- Questions variées et éducatives
-- Pas de questions ambiguës
-- Les mauvaises réponses doivent être plausibles mais clairement fausses
-
-Génère maintenant les 8 questions JSON:`;
-    }
-
-    async function fetchQuestionsFromLLM(level) {
-      return new Promise((resolve, reject) => {
-        const handlerName = 'quiz-questions-' + Date.now();
-
-        window.Poe.registerHandler(handlerName, (result) => {
-          const msg = result.responses[0];
-
-          if (msg.status === 'error') {
-            reject(new Error(msg.statusText || 'Erreur de génération'));
-            return;
-          }
-
-          if (msg.status === 'complete') {
-            try {
-              // Extract JSON from the response
-              let content = msg.content.trim();
-
-              // Try to find JSON array in the response
-              const jsonMatch = content.match(/\[[\s\S]*\]/);
-              if (jsonMatch) {
-                content = jsonMatch[0];
-              }
-
-              const questions = JSON.parse(content);
-
-              if (Array.isArray(questions) && questions.length > 0) {
-                // Validate structure
-                const validQuestions = questions.filter(q =>
-                  q.q &&
-                  Array.isArray(q.opts) &&
-                  q.opts.length === 4 &&
-                  typeof q.a === 'number' &&
-                  q.a >= 0 &&
-                  q.a <= 3
-                );
-
-                if (validQuestions.length >= 5) {
-                  resolve(validQuestions.slice(0, 8));
-                } else {
-                  reject(new Error('Questions invalides générées'));
-                }
-              } else {
-                reject(new Error('Format de réponse invalide'));
-              }
-            } catch (e) {
-              console.error('Parse error:', e, 'Content:', msg.content);
-              reject(new Error('Erreur de parsing JSON'));
-            }
-          }
-        });
-
-        const prompt = generateQuestionsPrompt(level);
-
-        window.Poe.sendUserMessage(`@GPT-5.1 ${prompt}`, {
-          handler: handlerName,
-          stream: false,
-          openChat: false
-        }).catch(err => {
-          reject(err);
-        });
-      });
-    }
-
     /* ---------- GAME FLOW ---------- */
     function chooseLevel(l) {
       state.level = l;
@@ -1108,52 +1017,38 @@ Génère maintenant les 8 questions JSON:`;
         <p><strong>Règles du jeu :</strong></p>
         <ul style="margin: 12px 0; padding-left: 20px; line-height: 1.8">
           <li>Choisissez votre niveau de difficulté</li>
-          <li>L'IA génère 8 questions uniques</li>
-          <li>Répondez aux questions à choix multiples</li>
+          <li>Répondez aux 8 questions</li>
           <li>Un son confirme les bonnes/mauvaises réponses</li>
           <li>Utilisez les touches 1-4 pour répondre rapidement</li>
+          <li>Vos meilleurs scores sont enregistrés pendant la session</li>
         </ul>
-        <p>🤖 Chaque partie propose des questions différentes !</p>
+        <p>Bonne chance ! 🍀</p>
       `);
     });
 
-    startBtn.addEventListener('click', () => initGame(state.level));
+    startBtn.addEventListener('click', () => startGame(state.level));
 
-    async function initGame(level) {
-      // Show loading
-      WELCOME.style.display = 'none';
-      LOADING.style.display = 'block';
-      GAME.style.display = 'none';
-      FINAL.style.display = 'none';
-      startBtn.disabled = true;
-
-      try {
-        const questions = await fetchQuestionsFromLLM(level);
-        startGameWithQuestions(level, questions);
-      } catch (error) {
-        console.error('Error fetching questions:', error);
-        LOADING.style.display = 'none';
-        WELCOME.style.display = 'block';
-        startBtn.disabled = false;
-        showInfo('❌ Erreur', `Impossible de générer les questions: ${error.message}<br><br>Veuillez réessayer.`);
+    function startGame(level) {
+      let pool = [];
+      if (level === 'random') {
+        pool = [...POOLS.beginner, ...POOLS.intermediate, ...POOLS.expert];
+      } else {
+        pool = [...POOLS[level]];
       }
-    }
 
-    function startGameWithQuestions(level, questions) {
-      state.pool = questions;
+      // shuffle and pick 8
+      pool = pool.sort(() => Math.random() - 0.5).slice(0, 8);
+      state.pool = pool;
       state.index = 0;
       state.score = 0;
-      state.total = questions.length;
+      state.total = pool.length;
       state.answered = false;
-      state.level = level;
+      state.level = level === 'random' ? 'Aléatoire' : level;
 
       // UI
-      LOADING.style.display = 'none';
       WELCOME.style.display = 'none';
       GAME.style.display = 'block';
       FINAL.style.display = 'none';
-      startBtn.disabled = false;
-
       scoreEl.textContent = '0';
       currentLevelEl.textContent = capitalize(state.level);
       totalEl.textContent = state.total;
@@ -1167,7 +1062,8 @@ Génère maintenant les 8 questions JSON:`;
       const labels = {
         'beginner': 'Débutant',
         'intermediate': 'Intermédiaire',
-        'expert': 'Expert'
+        'expert': 'Expert',
+        'Aléatoire': 'Aléatoire'
       };
       return labels[s] || s.charAt(0).toUpperCase() + s.slice(1);
     }
@@ -1285,7 +1181,7 @@ Génère maintenant les 8 questions JSON:`;
     }
 
     replayBtn.addEventListener('click', () => {
-      initGame(state.level);
+      startGame(state.level === 'Aléatoire' ? 'random' : state.level);
     });
 
     toMenuBtn.addEventListener('click', () => {
